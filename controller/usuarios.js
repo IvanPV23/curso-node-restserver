@@ -1,4 +1,6 @@
 const {response, request}= require('express');
+const Usuario= require('../models/usuarios');
+
 
 const usuariosGet = (req = request, res = response) => {
     const {q,nombre = 'no envia',apikey} = req.query;
@@ -19,12 +21,13 @@ const usuariosPut =(req, res= response) => {
 }
 
 
-const usuariosPost = (req, res = response) => {
-    const {nombre,edad} = req.body;
+const usuariosPost = async(req, res = response) => {
+    const body = req.body;
+    const usuario = new Usuario(body);
+    await usuario.save(); // esto es para grabar en BD
     res.json({
         msg: 'post API - controller',
-        nombre,
-        edad
+        usuario
     });
 }
 
